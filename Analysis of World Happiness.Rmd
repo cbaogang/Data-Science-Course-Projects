@@ -1,0 +1,158 @@
+---
+title: "Analysis of World Happiness"
+author: "  Chen bao gang (17186722)"
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_collapsed: yes
+    toc_depth: 3
+    number_sections: yes
+    theme: lumen
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 14px;
+  }
+td {  /* Table  */
+  font-size: 12px;
+}
+h1.title {
+  font-size: 38px;
+  color: lightblue;
+  font-weight: bold;
+}
+h1 { /* Header 1 */
+  font-size: 24px;
+  color: DarkBlue;
+}
+h2 { /* Header 2 */
+  font-size: 20px;
+  color: DarkBlue;
+}
+h3 { /* Header 3 */
+  font-size: 16px;
+#  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+}
+h4 { /* Header 4 */
+  font-size: 14px;
+  color: DarkBlue;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo=TRUE, results='hold', warning=FALSE, fig.show='hold', message=FALSE) 
+options(scipen = 99)
+```
+
+
+
+# Introduction
+
+Mengirim pesan surel (email) melalui akun Gmail dari R.
+
+## objective
+
+this is objective
+
+# Dataset Description
+this test
+
+# Data preprocessing
+
+Package `gmailr` memberikan kemudahan ketika kita membutuhkan proses mengirim email dari R melalui sebuah program.
+
+```{r}
+# install.packages("gmailr")
+# # or
+# devtools::install_github("jimhester/gmailr")
+library(gmailr)
+```
+
+# EDA
+
+```{r eval=FALSE}
+msgbody <- "Hi, %s."
+msg <- mime() %>%
+  from("your@gmail.com") %>%
+  to("send_to@email.com") %>%
+  text_body(sprintf(msgbody, "Aep Hidayatuloh"))
+```
+
+# Data Modelling
+
+```{r eval=FALSE}
+msg %>% 
+  send_message()
+```
+
+```
+# Use a local file to cache OAuth access credentials between R sessions?
+# 1: Yes
+# 2: No
+# 
+# Selection: 
+```
+
+
+Saya sarankan untuk memilih `Selection: 1` (ketik 1 di console) untuk menyimpan data login Anda dalam sebuah file di local folder Anda.
+
+Selanjutnya Anda akan diarahkan pada sebauh halam web untuk login akun gmail Anda.
+
+Lakukan login pada akun gmail Anda dengan memasukkan alamat email dan password. Anda tidak perlu khawatir tentang keamanan akun Anda. 
+
+
+Jika Anda memiliki beberapa akun gmail yang masih login di browser Anda, maka pilih akun yg Anda tuliskan pada bagian `to(...)`.
+
+
+
+Setelah memasukkan alamat email dan password, kemudian login. Selanjutnya Anda akan diarahkan pada halam seperti pada gambar di atas. Pilih `Lanjutan` atau `Advance`, kemudian pilih seperti pada gambar di bawah ini.
+
+
+
+Setelah itu akan muncul halaman seperti pada gambar di bawah ini. Pilih **Izinkan**.
+
+
+Terakhir akan muncul sebuah tampilan dengan tulisan 
+
+```
+Authentication complete. Please close this page and return to R.
+```
+
+Artinya Anda sudah berhasil melakukan login untuk aplikasi ini. Di dalam folder *working directory* Anda, akan ada sebuah file dengan nama `.httr-oauth`. Di file inilah informasi login Anda disimpan untuk kebutuhan login selanjutnya. Ketika Anda akan mengirim email lagi dengan script ini, Anda tidak perlu login lagi.
+
+Setelah itu akan muncul tampilan seperti berikut ini di console R.
+
+```
+Id: <id>
+To: 
+From: 
+Date: 
+Subject:
+```
+
+Artinya pesan Anda sudah terkirim.
+
+Fitur ini juga dapat dimanfaatkan sebagai pemberitahuan atau notifikasi dari sebuah program yang membutuhkan waktu proses cukup lama atau program yang rutin dijalankan ketika sudah selesai.
+
+
+# Result and dicussion
+
+
+# conclusion
+
+# Reference
