@@ -1,96 +1,11 @@
 ---
-title: "Analysis of World Happiness"
-
-date: '`r Sys.Date()`'
-output:
-  html_document:
-    toc: yes
-    toc_float: yes
-    toc_collapsed: yes
-    toc_depth: 3
-    number_sections: yes
-    theme: lumen
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
+title: "World Hapiness Data (2015-2019)"
+output: html_document
 ---
-<style type="text/css">
-
-body{ /* Normal  */
-      font-size: 14px;
-  }
-td {  /* Table  */
-  font-size: 12px;
-}
-h1.title {
-  font-size: 38px;
-  color: lightblue;
-  font-weight: bold;
-}
-h1 { /* Header 1 */
-  font-size: 24px;
-  color: DarkBlue;
-}
-h2 { /* Header 2 */
-  font-size: 20px;
-  color: DarkBlue;
-}
-h3 { /* Header 3 */
-  font-size: 16px;
-#  font-family: "Times New Roman", Times, serif;
-  color: DarkBlue;
-}
-h4 { /* Header 4 */
-  font-size: 14px;
-  color: DarkBlue;
-}
-code.r{ /* Code block */
-    font-size: 12px;
-}
-pre { /* Code block - determines code spacing between lines */
-    font-size: 12px;
-}
-</style>
-
-
-```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(echo=TRUE, results='hold', warning=FALSE, fig.show='hold', message=FALSE) 
-options(scipen = 99)
-```
-
-
-
-# Introduction
-
-
-
-## objective
-
-Our main goal is to do an exploratory analysis of the factors that make people happy.
-
-
-
-# Data preprocessing
-
-```{r}
-
-```
-
-## Dataset
-
-
-Abalone Physical Measurements
-Source: https://www.kaggle.com/rodolfomendes/abalone-dataset
-
-
-## Load Libraries
-
 ```{r}
 #install.packages('tidyverse')
 #install.packages('skimr')
 #install.packages('ggpubr')
-library(readr)
 library(readxl)
 library(dplyr)
 library(ggplot2)
@@ -98,241 +13,56 @@ library(skimr)
 library(tidyr)
 library(reshape2)
 library(ggpubr)
-library(stringr)
-
 # setwd("C:/ELS/RprojectsScrpit/case20220610")
 # setwd("C:/Users/kyle/Documents/Master Program/Data Science/Programming for Data Science/Programming-For-Data-Science")
 ```
 
-## Load the data
+# Load the data
 ```{r}
-# df = read_excel("World Hapiness Data (2015-2019).xlsx", sheet = "Sheet1")
-happy15_df = read.csv ("data/2015.csv")
-happy16_df = read.csv ("data/2016.csv")
-happy17_df = read.csv ("data/2017.csv")
-happy18_df = read.csv ("data/2018.csv")
-happy19_df = read.csv ("data/2019.csv")
-head(happy18_df)
+df = read_excel("World Hapiness Data (2015-2019).xlsx", sheet = "Sheet1")
+head(df)
 
 ```
 
-We have a look at the last one (head is by default with the first 5 rows)
-
-## Explore Dataset
-
-Checking the dimension of the datasets
+#briefly statistic view the data
 ```{r}
-print(paste("The amount of rows in the year 2015 dataset is: ",dim(happy15_df)[1]))
-print(paste("The amount of columns in the year 2015 dataset is: ",dim(happy15_df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(happy15_df)), collapse=", ")))
-
-
-```
-```{r}
-print(paste("The amount of rows in the year 2016 dataset is: ",dim(happy16_df)[1]))
-print(paste("The amount of columns in the year 2016 dataset is: ",dim(happy16_df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(happy16_df)), collapse=", ")))
-```
-```{r}
-print(paste("The amount of rows in the year 2017 dataset is: ",dim(happy17_df)[1]))
-print(paste("The amount of columns in the year 2017 dataset is: ",dim(happy17_df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(happy17_df)), collapse=", ")))
-```
-```{r}
-print(paste("The amount of rows in the year 2018 dataset is: ",dim(happy18_df)[1]))
-print(paste("The amount of columns in the year 2018 dataset is: ",dim(happy18_df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(happy18_df)), collapse=", ")))
-```
-```{r}
-print(paste("The amount of rows in the year 2019 dataset is: ",dim(happy19_df)[1]))
-print(paste("The amount of columns in the year 2019 dataset is: ",dim(happy19_df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(happy19_df)), collapse=", ")))
+print(paste("The amount of rows in the dataset is: ",dim(df)[1]))
+print(paste("The amount of columns in the dataset is: ",dim(df)[2]))
+print(paste("the column names in this dataset are:", paste(shQuote(colnames(df)), collapse=", ")))
 ```
 
-
-#### <a style="color:blue;">Change year 2018 datasets column names base year 2017 datasets</a>
-
+#Change column names
 ```{r}
 
-
-happy18_df=plyr::rename(happy18_df, replace = c( "Country.or.region"="Country", 
-                                  "Overall.rank"="Happiness.Rank" ,
-                                  "GDP.per.capita"="Economy..GDP.per.Capita.",
-                                  "Healthy.life.expectancy"="Health..Life.Expectancy.",
-                                  "Freedom.to.make.life.choices"="Freedom",
-                                  "Perceptions.of.corruption"="Trust..Government.Corruption.",
-                                  "Social.support"="Family",
-                                  "Score"="Happiness.Score"))
-
-
-colnames(happy18_df)
-
-
-```
-
-
-#### <a style="color:blue;">Change year 2019 datasets column names base year 2017 datasets</a>
-
-```{r}
-
-happy19_df=plyr::rename(happy19_df, replace = c( "Country.or.region"="Country", 
-                                  "Overall.rank"="Happiness.Rank" ,
-                                  "GDP.per.capita"="Economy..GDP.per.Capita.",
-                                  "Healthy.life.expectancy"="Health..Life.Expectancy.",
-                                  "Freedom.to.make.life.choices"="Freedom",
-                                  "Perceptions.of.corruption"="Trust..Government.Corruption.",
-                                  "Social.support"="Family",
-                                  "Score"="Happiness.Score"))
-
-colnames(happy19_df)
-
-```
-
-#### <a style="color:blue;">Change year 2015 datasets column names base year 2017 datasets</a>
-
-```{r}
-happy15_df=plyr::rename(happy15_df, replace = c( "Happiness Rank" = "Happiness.Rank", 
+df = plyr::rename(df, replace = c("Happiness Rank" = "Happiness.Rank", 
                                   "Happiness Score" = "Happiness.Score",
                                   "Economy (GDP per Capita)" = "Economy..GDP.per.Capita.",
                                   "Health (Life Expectancy)" = "Health..Life.Expectancy.",
-                                  "Trust (Government Corruption)"  = "Trust..Government.Corruption.",
-                                  "Dystopia Residual"="Dystopia.Residual"
-                                  ))
-
-happy15_df
-
-
-
+                                  "Trust (Government Corruption)"  = "Trust..Government.Corruption."))
 ```
 
-
-#### <a style="color:blue;">Change year 2016 datasets column names base year 2017 datasets</a>
-
-
 ```{r}
-
-happy16_df=plyr::rename(happy16_df, replace = c( "Happiness Rank" = "Happiness.Rank", 
-                                  "Happiness Score" = "Happiness.Score",
-                                  "Economy (GDP per Capita)" = "Economy..GDP.per.Capita.",
-                                  "Health (Life Expectancy)" = "Health..Life.Expectancy.",
-                                  "Trust (Government Corruption)"  = "Trust..Government.Corruption.",
-                                  "Dystopia Residual"="Dystopia.Residual"
-                                  ))
-
-happy16_df
-
-```
-
-#### <a style="color:blue;">insert year column at first position (index 0)</a>
-
-```{r}
-#2015
-
-happy15_df<-cbind(Year=2015,happy15_df)
-
-happy16_df<-cbind(Year=2016,happy16_df)
-
-happy17_df<-cbind(Year=2017,happy17_df)
-
-happy18_df<-cbind(Year=2018,happy18_df)
-
-happy19_df<-cbind(Year=2019,happy19_df)
-
-happy19_df
-
-
-```
-## change column type
-```{r}
-happy18_df$Trust..Government.Corruption. = as.numeric(happy18_df$Trust..Government.Corruption.)
-
-happy18_df
-
-```
-
-
-## merge data from 2015-2019
-
-
-```{r}
-
-
-
-happy15_16<-dplyr::bind_rows(happy15_df,happy16_df)
-
-happy15_16_17<-dplyr::bind_rows(happy15_16,happy17_df)
-
-
-happy18_19<-dplyr::bind_rows(happy18_df,happy19_df)
-
-
-df<-dplyr::bind_rows(happy18_19,happy15_16_17)
-
-df
-
-```
-
-
-
-## change column data type
-
-```{r}
-df$Happiness.Rank  = as.numeric(df$Happiness.Rank )
-
-
+colnames(df)
 str(df)
+summary(df)
+df$Trust..Government.Corruption. = as.numeric(df$Trust..Government.Corruption.)
 ```
-
-
-
-## Remove unnessesary columns
-```{r}
-
-colSums(is.na(df))
-
-
-
-```
-
 
 ```{r}
-
-df = subset(df, select = -c(Lower.Confidence.Interval,Upper.Confidence.Interval,Dystopia.Residual,Standard.Error,Whisker.high,Whisker.low))
-
-head(df)
+str(df)
+summary(df)
 ```
-
-
-## Impute with mean or median values for numerical columns.
-
+## Omit NA Data
 ```{r}
-
-
-df$Trust..Government.Corruption.[is.na(df$Trust..Government.Corruption.)] <- median(df$Trust..Government.Corruption., na.rm = T)
-
-colSums(is.na(df))
-
-```
-```{r}
-colnames(df)[apply(df, 2, anyNA)]
-
+df = na.omit(df)
+str(df)
+summary(df)
 ```
 
-
-```{r}
-head(df)
-```
-
-
-
-
-## Filter uncommon data in Country Column
 
 Due to the data is describing the happiness score and relative factors for countries accross different years. So, it is important to view the uniformity of the data in Year column of the data.
 
-
-Country and Region counts groupby Year
-
+## Country and Region counts groupby Year
 ```{r}
 aggregate(df$Country, by=list(df$Year), FUN=length)
 ```
@@ -364,88 +94,12 @@ print(paste("The amount of columns in the dataset is: ",dim(df1)[2]))
 ```{r}
 str(df1)
 ```
-
-
-
-
-## Fill value for categorical columns
-
-
-Create a new dataset for storing common region and country
-
-```{r}
-
-common_region <- unique(subset(df1, Region!="NA", c(Country, Region)))
-
-print(common_region)
-
-```
-
-Fill relate region to missing value of region column
-
-
-```{r}
-
-assign_region <- function(x){
-  
-  Region <- common_region$Region[common_region$Country == x]
-  
-}
-
-
-for(country in common_country)
-
-      df1$Region[df1$Country == country] <- assign_region(country)
-      
-
-
-```
-
-
-```{r}
-print(df1)
-```
-
-## Save cleaned dataset
-
-```{r}
-# write_csv(df1, path = "World Hapiness Data (2015-2019)_cleaned.csv")
-
-```
 ## statistic view of the new df1
 ```{r}
 
 skimr::skim_without_charts(df1)
-
-
 ```
-
-
-
-
-### briefly statistic view the data
-
-
-```{r}
-str(df)
-colnames(df)
-summary(df)
-```
-
-```{r}
-print(paste("The amount of rows in the dataset is: ",dim(df)[1]))
-print(paste("The amount of columns in the dataset is: ",dim(df)[2]))
-print(paste("the column names in this dataset are:", paste(shQuote(colnames(df)), collapse=", ")))
-```
-
-
-
-
-# Exploratary Data Analysis
-
-
-The 10 happiest countries in 2015
-
+## The 10 happiest countries in 2015
 ```{r}
 df1 %>%
   filter(Year == 2015) %>%
@@ -459,9 +113,7 @@ df1 %>%
 
 
 ```
-
-The 10 happiest countries in 2016
-
+## The 10 happiest countries in 2016
 ```{r}
 df1 %>%
   filter(Year == 2016) %>%
@@ -475,8 +127,7 @@ df1 %>%
 
 
 ```
-
-The 10 happiest countries in 2017
+## The 10 happiest countries in 2017
 
 ```{r}
 df1 %>%
@@ -491,8 +142,7 @@ df1 %>%
 
 
 ```
-
-The 10 happiest countries in 2018
+## The 10 happiest countries in 2018
 
 ```{r}
 df1 %>%
@@ -507,8 +157,7 @@ df1 %>%
 
 
 ```
-
-The 10 happiest countries in 2019
+## The 10 happiest countries in 2019
 
 ```{r}
 df1 %>%
@@ -537,8 +186,7 @@ Region_Yearavg_HappyScore
 ggplot(Region_Yearavg_HappyScore,aes(x = Year,y = Mean_HappyScore,fill = Region))+
   geom_bar(stat = "identity",position = "dodge")
 ```
-
-The top 3 happiness region are: Australia and New Zealand, North America and Western Europe
+## The top 3 happiness region are: Australia and New Zealand, North America and Western Europe
 
 
 ## from 2015 to 2019, Mean Happiness score by regions:
@@ -821,13 +469,8 @@ corrplot(Cor.data, method = 'color')
 
 
 ```{r}
-
-
-
-
-newdatacor = cor(select(df1,-c("Year","Region","Country")))
+newdatacor = cor(df1[c(4:11)])
 corrplot(newdatacor, method = "number")
-
 ```
 
 
@@ -838,19 +481,3 @@ corrplot(newdatacor, method = "number")
 ```{r}
 ```
 
-
-# Data Modelling
-
-```{r}
-
-```
-
-
-
-
-# Result and dicussion
-
-
-# conclusion
-
-# Reference
