@@ -8,13 +8,13 @@
     - [ ] problem statement
     - [ ] objectives
 
-- [ ] Dataset Description (**09/6/22**)
-- [ ] EDA (**10/6/22**)
+- [x] Dataset Description (**09/6/22**)
+- [x] EDA (**10/6/22**)
 
-- [ ] Data pre-processing (**11/6/22**)
-    - [ ] data cleaning
-    - [ ] data integration
-    - [ ] data reduction 
+- [x] Data pre-processing (**11/6/22**)
+    - [x] data cleaning
+    - [x] data integration
+    - [x] data reduction 
 
 - [ ] Data Modelling (**12/6/22**)
     - [ ] -Train-test data preparation
@@ -33,3 +33,4 @@
 - slide prepare - __15/2022__
 - scrip and simulate -__16/2022__
 - presentation - __17/6/2022__
+
