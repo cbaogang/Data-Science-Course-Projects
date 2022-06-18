@@ -60,6 +60,11 @@ knitr::opts_chunk$set(echo=TRUE, results='hold', warning=FALSE, fig.show='hold',
 options(scipen = 99)
 ```
 
+
+
+![Happiness](data/HappinessImage.jpeg)
+
+
 **GROUP MEMBERS (GROUP 13)**
 
 CHEN BAOGANG                 17186722
@@ -79,17 +84,25 @@ Happiness is an emotional state characterized by feelings of joy, fulfillment, s
 
 
 ## Problems
+
 1. Which countries are on the Top 10 Happiness Countries list?
+
 2. Which countries are on the Top 10 Progressive Countries list?
+
 3. Which factor affects people's happiness the most?
-4. Which regression is the best to predict the happiness scores?
+
+4. Which regression model is the best to predict the happiness scores?
+
 5. Which classification model is the best to predict happiness levels?
 
 
 ## Objective
 
-This study aims to both quantify and analyze well-being around the world. Our main goal is to do an exploratory analysis of the factors that make people happy.
+- This study aims to both quantify and analyze well-being around the world. Our main goal is to do an exploratory analysis of the factors that make people happy.
 
+- To predict happiness score through different regression models
+
+- To predict happiness level through two classification models
 
 
 
@@ -110,6 +123,40 @@ The content of these happiness scores and rankings use data come from the Gallup
 
 The datasets need to be cleaning and tidy up by renaming the variables so that they are all titled the same in five CSV files, combining them, and ensuring that there are no uncommon data or missing values in this dataset.
 
+
+## Data Column understanding
+
+- Country
+
+- Happiness rank
+
+- Happiness score
+
+This is obtained from a sample of population. The survey-taker asked the respondent to rate their happiness from 1 to 10.
+
+- Economic (GDP per cap)
+
+Extend of GDP that contributes to the happiness score
+
+- Family
+
+To what extend does family contribute to the happiness score
+
+- health (life expectancy)
+
+Extend of health (life expectancy) contribute to the happiness score
+
+- Freedom
+
+Extend of freedom that contribute to happiness. The freedom here represents the freedom of speech, freedom to pursue what we want, etc
+
+- Trust (Government corruption)
+
+Extend of trust with regards to government corruption that contribute to happiness score
+
+- Generosity
+
+Extend of generosity that contribute to happiness score
 
 ## Load libraries
 
@@ -787,7 +834,10 @@ dataset_level <- dataset %>%
 
 
 
-# Regression Algorithm
+# Regression Models
+
+
+
 
 ## Split into train set (80%) and test set (20%) 
 
@@ -991,16 +1041,9 @@ ggarrange(gg.lm, gg.svr, gg.dt, gg.rf, ncol = 2, nrow = 3)
 
 
 
-# Classification Algorithm
+# Classification Models
 
-## Feature Scaling 
-
-```{r}
-# Defined a preprocess variable, which includes the two operations: center and scale
-
-preProcess <- c("center","scale")
-```
-
+Dependent variable is happiness level in dataset_level, 
 
 ## Split into train set (80%) and test set (20%) 
 
@@ -1028,7 +1071,7 @@ tc <- trainControl(method = "repeatedcv",
 ```
 
 
-## K-Neighbors Classifier for predicting Happy Level</a>
+## K-Nearest Neighbor Classifier for predicting Happy Level</a>
 
 ### Train K-Nearest Neighbours model with data_train
 
@@ -1037,8 +1080,8 @@ set.seed(123)
 model_knn <- train(
   Happy.Level~., 
   data=data_train, 
-  trControl=tc, 
-  preProcess = preProcess,
+  trControl=tc,
+  preProcess = c("center","scale"),
   method="knn",
   metric='Accuracy',
   tuneLength=20
@@ -1086,7 +1129,7 @@ ggplot(data = knn_importance, mapping = aes(x = knn_importance[,1])) + # Data & 
 model_nb <- train(Happy.Level~.,
                   data_train,
                   method="naive_bayes",
-                  preProcess = preProcess,
+                  preProcess = c("center","scale"),
                   metric='Accuracy',
                   trControl=tc)
 
@@ -1114,10 +1157,10 @@ cm_nb
 
 ```{r}
 # Create object of importance of our variables 
-rf_importance <- varImp(model_nb) 
+nb_importance <- varImp(model_nb) 
 
 # Create box plot of importance of variables
-ggplot(data = rf_importance, mapping = aes(x = rf_importance[,1])) + # Data & mapping
+ggplot(data = nb_importance, mapping = aes(x = nb_importance[,1])) + # Data & mapping
   geom_boxplot() + # Create box plot
   labs(title = "Variable importance: Naive Bayes model") + # Title
   theme_light() # Theme
@@ -1155,7 +1198,7 @@ The top 10 progressive countries are Benin, Togo, Ivory Coast, Burundi, Burkina 
 
 ## <a style="color:blue;">The Main Factor Affects Happiness</a>
 
-The main factor that affects happiness is Economic GDP per capita. It is probably because income can let people meet their basic needs, so it is quite important and will affect people's happiness. 
+The factor that most affect happiness is Economic GDP per capita, It is probably because income can let people meet their basic needs, so it is quite important and will affect people's happiness, and another main factor is health.
 
 ## <a style="color:blue;">Happiness Score Prediction (Regression Model)</a>
 
@@ -1163,7 +1206,7 @@ Random Forest Regression comes out with the best result compared to others, Supp
 
 ## <a style="color:blue;">Happiness Level Prediction (Classification Model)</a>
 
-K-Neighbors Classification model is better than Naive Bayes Classification model in our project result since the prediction accuracy of K-Neighbors Classification model is higher than the other one.
+K-Nearest Neighbor Classification model is better than Naive Bayes Classification model in our project result since the prediction accuracy of K-Nearest Neighbor Classification model is higher than the other one.
 
 
 

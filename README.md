@@ -31,8 +31,8 @@
 ## Deadline 
 - [x] code compile - __14/6/2022__
 - [x] slide prepare - __15/2022__
-- [ ] scrip and simulate -__16/2022__
-- [ ] presentation - __17/6/2022__
+- [x] scrip and simulate -__16/2022__
+- [x] presentation - __17/6/2022__
 
 ## project published link
 
